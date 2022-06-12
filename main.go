@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"suggestion_bot/bot"
 )
 
@@ -13,17 +12,17 @@ func main() {
 		ADMIN_CHAT_ID,
 		nil,
 	}
-	port := os.Getenv("PORT")
-	http.HandleFunc("/", handler) // each request calls handler
-
+	fmt.Println("Initializing bot...")
 	if err := SuggestionBot.Init(BOT_TOKEN); err != nil {
 		panic(err)
 	}
+	go SuggestionBot.Run()
+	fmt.Println("Bot started.")
+	fmt.Println("Listening for http...")
 
-	if err := SuggestionBot.Run(); err != nil {
-		panic(err)
-	}
-	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, nil))
+	http.HandleFunc("/", handler) // each request calls handler
+	fmt.Println("")
+	log.Fatal(http.ListenAndServe("0.0.0.0:"+PORT, nil))
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
