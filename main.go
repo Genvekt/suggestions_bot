@@ -23,7 +23,7 @@ func main() {
 	if err := SuggestionBot.Run(); err != nil {
 		panic(err)
 	}
-	log.Fatal(http.ListenAndServe("localhost:"+port, nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, nil))
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
